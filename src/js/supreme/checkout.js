@@ -42,13 +42,12 @@ const fillCheckout = () => {
 
 				//billing
 				$('#credit_card_type').val(r.card_type)
-				// various fields that could be valid on drop day in UK & US
-				$("#card_details > div > input").eq(0).val(r.card_number)
-				$("#card_details > div > input").eq(1).val(r.cvv)
-				$("#card_details > div > select").eq(0).val(r.card_month);
-				$("#card_details > div > select").eq(1).val(r.card_year);
-				$('#credit_card_month').val(r.card_month)
-				$('#credit_card_year').val(r.card_year)
+				//guess longest input with name like "card" is cc # and next-longest is cvv
+				let cardInputFields = $('input[name*=card]').sort(e => $(e).width())
+				cardInputFields.eq(0).val(r.card_number)
+				cardInputFields.eq(1).val(r.cvv)
+				$('select[name*=month]').eq(0).val(r.card_month);
+				$('select[name*=year]').eq(0).val(r.card_year);
 				$(".icheckbox_minimal").click()
 				if (settings.autoCheckout)
 					setTimeout(() => $('[name=commit]').click(), 1380)
